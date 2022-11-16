@@ -1,53 +1,52 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
-import { Form, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Categories from "./Categories";
 
-function AddQuestion({ fcardsNum, onAdd }) {
+function AddQuestion() {
   const navigate = useNavigate();
   function addObject() {
     var headers = {
       Authorization: "Bearer " + window.sessionStorage.getItem("auth_token"),
       "Content-Type": "multipart/form-data",
     };
+    if (imageData.file != null) {
+      axios
+        .post("api/flashcards/images", imageData, { headers })
+        .then((res) => {
+          let newQuestion = questionData;
+          newQuestion["image_id"] = res.data.image.id;
 
+          setQuestionData(newQuestion);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
     axios
-      .post("api/flashcards/images", imageData, { headers })
+      .post("api/flashcards/add_question", questionData, { headers })
       .then((res) => {
-        console.log(res.data);
-        console.log(res.data.image.id);
-
-        let newQuestion = questionData;
-        newQuestion["image_id"] = res.data.image.id;
-
-        setQuestionData(newQuestion);
-        axios
-          .post("api/flashcards/add_question", questionData, { headers })
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
+        console.log(res);
+        console.log(questionData);
       })
       .catch((e) => {
         console.log(e);
       });
-    // onAdd(questionData);
-    // navigate("/");
+    navigate("/flashcards");
   }
   const [questionData, setQuestionData] = useState({
     question: "",
     category_id: "1",
 
     answer1: "",
-    is_correct1: false,
+    is_correct1: 0,
 
     answer2: "",
-    is_correct2: false,
+    is_correct2: 0,
 
     answer3: "",
-    is_correct3: false,
+    is_correct3: 0,
 
     user_id: window.sessionStorage.getItem("user_id"),
     image_id: "",
@@ -67,17 +66,17 @@ function AddQuestion({ fcardsNum, onAdd }) {
   }
   function handleCheckbox(e) {
     let newQuestion = questionData;
-    newQuestion[e.target.name] = !questionData[e.target.name];
+    newQuestion[e.target.name] = questionData[e.target.name] == 0 ? 1 : 0;
 
     setQuestionData(newQuestion);
-    console.log(newQuestion);
+    // console.log(newQuestion);
   }
   function handleImageInput(e) {
     let newImage = imageData;
     newImage[e.target.name] = e.target.value;
 
     setImageData(newImage);
-    console.log(newImage);
+    // console.log(newImage);
   }
   function handleFile(e) {
     let newImage = imageData;
@@ -86,9 +85,8 @@ function AddQuestion({ fcardsNum, onAdd }) {
     newImage[e.target.name] = e.target.files[0];
 
     setImageData(newImage);
-    console.log(newImage);
+    // console.log(newImage);
   }
-  useEffect(() => console.log(questionData));
 
   return (
     <div className="addquestion">
@@ -200,19 +198,7 @@ function AddQuestion({ fcardsNum, onAdd }) {
                 placeholder="Image description"
                 onInput={handleImageInput}
               ></input>
-              <label>Category</label>
-              <select
-                className="form-select"
-                name="category"
-                id="category"
-                onChange={handleQAInput}
-              >
-                <option value="Choose">Choose category</option>
-                <option value="Biology">Biology</option>
-                <option value="Geography">Geography</option>
-                <option value="History">History</option>
-                <option value="Music">Music</option>
-              </select>
+              <Categories handleQAInput={handleQAInput} />
             </td>
             <td>
               <button

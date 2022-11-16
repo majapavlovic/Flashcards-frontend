@@ -6,7 +6,6 @@ import Flashcard from "./Flashcard";
 
 function AllFlashcards({ currentUser }) {
   let userId = window.sessionStorage.getItem("user_id");
-  console.log("User id: " + userId);
   const [flashcards, setFlashcards] = useState();
   var config = {
     method: "get",
