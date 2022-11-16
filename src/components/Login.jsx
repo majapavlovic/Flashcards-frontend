@@ -4,7 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-function Login({ addToken }) {
+function Login({ addToken, setUser }) {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
     email: "",
@@ -21,10 +21,11 @@ function Login({ addToken }) {
     axios
       .post("api/flashcards/login", userData)
       .then((res) => {
-        console.log(res.data);
         if (res.data.success === true) {
           window.sessionStorage["auth_token"] = res.data.access_token;
+          window.sessionStorage["user_id"] = res.data.user.id;
           addToken(res.data.access_token);
+          setUser(res.data.user);
           navigate("/");
         }
       })

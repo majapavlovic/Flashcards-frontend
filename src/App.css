@@ -16,12 +16,15 @@
 }
 
 .addquestion {
-  position: fixed;
-  left: 50%;
+  /* position: fixed;
+  left: 40%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 450px;
-  margin-top: 16px;
+  width: 2000px; */
+  display: block;
+  margin-left: 100px;
+  margin-right: auto;
+  width: 120%;
 }
 
 .all-flashcards {

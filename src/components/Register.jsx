@@ -22,7 +22,7 @@ export default function Register() {
       .post("api/flashcards/register", userData)
       .then((res) => {
         if (res.data.success === true) {
-          navigate("/login");
+          navigate("login");
         }
       })
       .catch((e) => {

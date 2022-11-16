@@ -1,10 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { MdAddBox } from "react-icons/md";
 import { AiOutlineHome } from "react-icons/ai";
 import axios from "axios";
 
 function Navigation({ token }) {
+  const navigate = useNavigate();
+
   function handleLogout(e) {
     e.preventDefault();
     console.log(window.sessionStorage.getItem("auth_token"));
@@ -19,6 +21,7 @@ function Navigation({ token }) {
       .then((res) => {
         console.log(JSON.stringify(res.data));
         window.sessionStorage.setItem("auth_token", null);
+        navigate("/login");
       })
       .catch((e) => {
         console.log(JSON.stringify(e));
@@ -65,9 +68,14 @@ function Navigation({ token }) {
                 </Link>
               </li>
               <li className="nav-item">
+                <Link to="/flashcards" className="nav-link">
+                  My flashcards
+                </Link>
+              </li>
+              <li className="nav-item">
                 <Link to="/add-question" className="nav-link">
                   <MdAddBox />
-                  &nbsp;Add a question
+                  &nbsp;Add a flashcard
                 </Link>
               </li>
             </ul>
@@ -85,6 +93,7 @@ function Navigation({ token }) {
           </div>
         </div>
       </nav>
+      <Outlet />
     </>
   );
 }
