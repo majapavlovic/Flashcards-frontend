@@ -19,20 +19,31 @@ function AddQuestion() {
           newQuestion["image_id"] = res.data.image.id;
 
           setQuestionData(newQuestion);
+
+          axios
+            .post("api/flashcards/add_question", questionData, { headers })
+            .then((res) => {
+              console.log(res);
+              console.log(questionData);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else {
+      axios
+        .post("api/flashcards/add_question", questionData, { headers })
+        .then((res) => {
+          console.log(res);
+          console.log(questionData);
         })
         .catch((e) => {
           console.log(e);
         });
     }
-    axios
-      .post("api/flashcards/add_question", questionData, { headers })
-      .then((res) => {
-        console.log(res);
-        console.log(questionData);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
     navigate("/flashcards");
   }
   const [questionData, setQuestionData] = useState({

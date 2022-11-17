@@ -1,10 +1,12 @@
 import React from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { MdAddBox } from "react-icons/md";
+import { CgProfile } from "react-icons/cg";
 import { AiOutlineHome } from "react-icons/ai";
 import axios from "axios";
+import Weather from "./Weather";
 
-function Navigation({ token }) {
+function Navigation({ token, setToken }) {
   const navigate = useNavigate();
 
   function handleLogout(e) {
@@ -21,6 +23,9 @@ function Navigation({ token }) {
       .then((res) => {
         console.log(JSON.stringify(res.data));
         window.sessionStorage.setItem("auth_token", null);
+        window.sessionStorage.setItem("user_id", null);
+        window.sessionStorage.setItem("user_role", null);
+        setToken(null);
         navigate("/login");
       })
       .catch((e) => {
@@ -78,17 +83,23 @@ function Navigation({ token }) {
                   &nbsp;Add a flashcard
                 </Link>
               </li>
+              {window.sessionStorage.getItem("user_role") == "admin" ? (
+                <li className="nav-item">
+                  <Link
+                    to="/users"
+                    className="nav-link active"
+                    aria-current="page"
+                  >
+                    <CgProfile />
+                    &nbsp;Manage users
+                  </Link>
+                </li>
+              ) : (
+                <></>
+              )}
             </ul>
             <form className="d-flex">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-light" type="submit">
-                Search
-              </button>
+              <Weather />
             </form>
           </div>
         </div>
