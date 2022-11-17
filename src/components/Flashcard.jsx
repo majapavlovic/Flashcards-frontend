@@ -12,11 +12,22 @@ function Flashcard({ flashcard, answers }) {
   function show() {
     setHidden(!isHidden);
   }
+  console.log(flashcard);
   return (
     <div>
       <div className="card">
         <div className="card-body">
           <h5 className="card-title">{flashcard.question.question}</h5>
+          {flashcard.image == null ? (
+            <></>
+          ) : (
+            <img
+              width={300 + "px"}
+              height={300 + "px"}
+              src={"http://localhost:8000/storage" + flashcard.image.file_path}
+            ></img>
+          )}
+          <br />
           <button
             className="btn btn-outline-dark btn-sm"
             onClick={() => {
@@ -34,11 +45,11 @@ function Flashcard({ flashcard, answers }) {
                     className="btn btn-light"
                     key={a.id}
                     style={{
-                      color: isActive ? "green" : "",
+                      backgroundColor: isActive ? "green" : "",
                     }}
                     onClick={handleClick}
                   >
-                    {a.answer + a.is_correct}
+                    {a.answer}
                   </li>
                 ) : (
                   <li
@@ -46,11 +57,11 @@ function Flashcard({ flashcard, answers }) {
                     className="btn btn-light"
                     key={a.id}
                     style={{
-                      color: isActive ? "red" : "",
+                      backgroundColor: isActive ? "red" : "",
                     }}
                     onClick={handleClick}
                   >
-                    {a.answer + a.is_correct}
+                    {a.answer}
                   </li>
                 )
               )}
