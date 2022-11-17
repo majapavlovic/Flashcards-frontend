@@ -98,9 +98,9 @@ function Navigation({ token, setToken }) {
                 <></>
               )}
             </ul>
-            <form className="d-flex">
+            <div className="me-2" style={{ color: "white" }}>
               <Weather />
-            </form>
+            </div>
           </div>
         </div>
       </nav>

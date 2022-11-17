@@ -21,9 +21,7 @@ export default function Register() {
     axios
       .post("api/flashcards/register", userData)
       .then((res) => {
-        if (res.data.success === true) {
-          navigate("login");
-        }
+        navigate("/login");
       })
       .catch((e) => {
         console.log(e);
