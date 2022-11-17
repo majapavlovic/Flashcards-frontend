@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import axios from "axios";
 import DeleteQuestion from "./components/DeleteQuestion";
+import UserManagement from "./components/UserManagement";
 
 axios.defaults.baseURL = "http://127.0.0.1:8000/";
 
@@ -17,9 +18,6 @@ function App() {
       ? ""
       : window.sessionStorage["auth_token"]
   );
-  function addToken(authToken) {
-    setToken(authToken);
-  }
   const [currentUser, setCurrentUser] = useState();
   function setLoggedUser(userData) {
     setCurrentUser(userData);
@@ -35,10 +33,13 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigation token={token} />}>
+        <Route
+          path="/"
+          element={<Navigation token={token} setToken={setToken} />}
+        >
           <Route
             path="/login"
-            element={<Login addToken={addToken} setUser={setLoggedUser} />}
+            element={<Login addToken={setToken} setUser={setLoggedUser} />}
           />
           <Route path="/register" element={<Register />} />
           <Route
@@ -51,9 +52,8 @@ function App() {
           />
           <Route path="/add-question" element={<AddQuestion />} />
           <Route path="/delete-question/:id" element={<DeleteQuestion />} />
+          <Route path="/users" element={<UserManagement />} />
         </Route>
-
-        {/* <Route path="/" element={<Navigation token={token} />} /> */}
       </Routes>
     </BrowserRouter>
   );

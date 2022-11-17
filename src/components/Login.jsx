@@ -24,6 +24,7 @@ function Login({ addToken, setUser }) {
         if (res.data.success === true) {
           window.sessionStorage["auth_token"] = res.data.access_token;
           window.sessionStorage["user_id"] = res.data.user.id;
+          window.sessionStorage["user_role"] = res.data.user.role;
           addToken(res.data.access_token);
           setUser(res.data.user);
           navigate("/");
