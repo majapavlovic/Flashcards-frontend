@@ -11,29 +11,34 @@ function AddQuestion() {
       Authorization: "Bearer " + window.sessionStorage.getItem("auth_token"),
       "Content-Type": "multipart/form-data",
     };
+
     if (imageData.file != null) {
       axios
         .post("api/flashcards/images", imageData, { headers })
         .then((res) => {
+          console.log(res.data);
           let newQuestion = questionData;
-          newQuestion["image_id"] = res.data.image.id;
 
-          setQuestionData(newQuestion);
-
-          axios
-            .post("api/flashcards/add_question", questionData, { headers })
-            .then((res) => {
-              console.log(res);
-              console.log(questionData);
-            })
-            .catch((e) => {
-              console.log(e);
-            });
+          if (res.data.image.id) {
+            newQuestion["image_id"] = res.data.image.id;
+            setQuestionData(newQuestion);
+          }
+          if (questionData.image_id != null) {
+            axios
+              .post("api/flashcards/add_question", questionData, { headers })
+              .then((res) => {
+                console.log(res);
+                console.log(questionData);
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+          }
         })
         .catch((e) => {
           console.log(e);
         });
-    } else {
+    } else if (imageData.file == null) {
       axios
         .post("api/flashcards/add_question", questionData, { headers })
         .then((res) => {
@@ -44,7 +49,8 @@ function AddQuestion() {
           console.log(e);
         });
     }
-    navigate("/flashcards");
+
+    // navigate("/flashcards");
   }
   const [questionData, setQuestionData] = useState({
     question: "",
