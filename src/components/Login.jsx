@@ -32,6 +32,7 @@ function Login({ addToken, setUser }) {
       })
       .catch((e) => {
         console.log(e);
+        alert("Wrong email or password!");
       });
   }
   return (
